@@ -95,55 +95,46 @@ confirm file "$input/Cleaned_Period.dta"
 
 
 ****************************************
-* 1. MATCHING
+* 1. MAIN RESULTS
 ****************************************
 if $run_main == 1 {
-	* Full sample (main)
+	* Matching: full sample (main)
 	do "$code/settings.do" Country Province PSM-NoReplace
 	do "$code/01_matching.do"				// SI Figures 3b and 4
 
-	* Formalization sample (cohorts)
+	* Matching: formalization sample (cohorts)
 	do "$code/settings.do" Praka Province PSM-NoReplace
 	do "$code/01_matching.do"
+
+	do "$code/settings.do" Country Province PSM-NoReplace
+	do "$code/02_sumstats.do"				// SI Tables 1a, 1b, 3, 5; Figures 1a-b and 2b; SI Figures 1, 3a, 6
+
+	do "$code/settings.do" Country Province PSM-NoReplace
+	do "$code/03_did_estimation.do"			// Table 1; Figures 1c, 2a, 2c-d, 3, 5; SI Table 4
+
+	do "$code/settings.do" Praka Province PSM-NoReplace
+	do "$code/04_hrdid_estimation.do"		// Figure 1d; SI Figures 2 and 8
+
+	do "$code/settings.do" Country Province PSM-NoReplace
+	do "$code/05_cf_vs_pa.do"				// Figure 4
 }
 
+
+****************************************
+* 2. ROBUSTNESS (needs run_main first; CEM matching takes many hours)
+****************************************
 if $run_robust == 1 {
 	* Ecoregion matching
 	do "$code/settings.do" Country Ecoregion PSM-NoReplace
 	do "$code/01_matching.do"
+	do "$code/settings.do" Country Ecoregion PSM-NoReplace
+	do "$code/03_did_estimation.do"			// SI Table 2
 
 	* Alternate matching methods
 	foreach m in PSM-Replace PSM-Caliper CEM {
 		do "$code/settings.do" Country Province `m'
 		do "$code/01_matching.do"
 	}
-}
-
-
-****************************************
-* 2. MAIN RESULTS
-****************************************
-if $run_main == 1 {
-	do "$code/settings.do" Country Province PSM-NoReplace
-	do "$code/02_sumstats.do"				// SI Tables 1a, 1b, 3, 5; Figures 1a-b and 2b; SI Figures 1, 3a, 6
-
-	do "$code/settings.do" Country Province PSM-NoReplace
-	do "$code/03_did_estimation.do"				// Table 1; Figures 1c, 2a, 2c-d, 3, 5; SI Table 4
-
-	do "$code/settings.do" Praka Province PSM-NoReplace
-	do "$code/04_hrdid_estimation.do"				// Figure 1d; SI Figures 2 and 8
-
-	do "$code/settings.do" Country Province PSM-NoReplace
-	do "$code/05_cf_vs_pa.do"			// Figure 4
-}
-
-
-****************************************
-* 3. ROBUSTNESS
-****************************************
-if $run_robust == 1 {
-	do "$code/settings.do" Country Ecoregion PSM-NoReplace
-	do "$code/03_did_estimation.do"				// SI Table 2
 
 	do "$code/settings.do" Country Province PSM-NoReplace
 	do "$code/06_robustness.do"				// SI Robustness Figures 1-4 and Tables 1-3; SI Table 6; SI Figure 7

@@ -535,7 +535,7 @@ if "$matchgroup" == "Province" & "$method" == "PSM-NoReplace" {
 	graph export "$DFigures/SI Figure 4.png", replace as(png)
 
 	* Post-Match Balance Plot
-	balanceplot $outcome_var $match_vars , group(treat) graphop(title("") subtitle("") xti("% Normalized Difference")) nosort table
+	balanceplot $match_vars , group(treat) graphop(title("") subtitle("") xti("Normalized Difference")) nosort table
 	graph export "$DFigures/SI Figure 3b.png", replace as(png)
 }
 

@@ -8,4 +8,6 @@ Toto et al., "Formalizing community forests reduces deforestation by over one th
 2. Open `00_master.do` and set `global root` to this folder.
 3. Run `00_master.do` in Stata 18 or later. On the first run, set `install_packages` to 1.
 
+The robustness checks (`run_robust`) include CEM matching, which can take many hours. Set `run_robust` to 0 to reproduce only the main results.
+
 The paper's tables and figures are saved in `output/Tables` and `output/Figures`, named as in the paper. `OUTPUTS.md` lists which do-file makes each one.
